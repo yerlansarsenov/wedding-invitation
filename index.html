@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Қарлығаш - қыз ұзату</title>
+    <style>
+        @font-face {
+            font-family: 'Cassandra';
+            src: url('Cassandra.ttf') format('truetype');
+        }
+        html {
+            font-size: 16px; /* Base font size for rem units */
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cassandra', sans-serif;
+            color: #fefefe;
+            text-align: center;
+            background-color: #1a2023;/*#faf8f5;*/
+        }
+        /* Base animation styles */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: 0.1s; /* Small delay for staggered effect */
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .background-container {
+            background-image: url('bgnd_top.png');
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: contain;
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(1rem, 5vw, 20px); /* Responsive padding */
+            box-sizing: border-box;
+            background-color: #1a2023;
+        }
+        .content {
+            /* This div is here if we need to add a background overlay later */
+        }
+        h1 {
+            font-size: clamp(3.5rem, 9vw, 12.5rem); /* Fluid font size */
+            margin: 0;
+        }
+        .subtitle {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            margin: 0;
+        }
+        p {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+            margin: 0;
+        }
+        .date-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(1rem, 3vw, 25px); /* Fluid gap */
+            font-size: clamp(2.5rem, 5vw, 5rem); /* Fluid font size */
+            line-height: 1;
+            margin: 0;
+        }
+        .date-number {
+            font-size: clamp(6rem, 10vw, 6rem); /* Fluid font size */
+            line-height: 1;
+        }
+
+        /* Invitation Text Styles */
+        .invitation-container {
+            padding: clamp(2rem, 8vw, 4em) clamp(2rem, 8vw, 4em); /* Fluid padding */
+        }
+        .invitation-subtitle {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            font-weight: bold;
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+            color: #d3af37;
+        }
+        .invitation-body {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+            max-width: 30em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .invitation-name {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            margin: clamp(0.2rem, 1vw, 0.5em) 0; /* Fluid margin */
+            color: #d3af37;
+        }
+
+        /* Calendar Section Styles */
+        .calendar-section {
+            padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em); /* Fluid padding */
+            background-color: #1a2023;
+        }
+        .calendar-title {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+        }
+        .calendar-date {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            color: #d3af37;
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+        .calendar-container {
+            .calendar-container {
+                max-width: 90%;
+                margin: clamp(1rem, 4vw, 2em) auto; /* Fluid margin */
+                font-size: clamp(3rem, 7vw, 3em); /* Fluid font size */
+                border: 2px solid #434634;
+                border-radius: 50px;
+                padding: clamp(0.5rem, 2vw, 1em); /* Fluid padding */
+                overflow-x: auto;
+            }
+        }
+        .calendar-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .calendar-container th, .calendar-container td {
+            padding: clamp(0.2rem, 1vw, 0.5em); /* Fluid padding */
+            text-align: center;
+        }
+        .calendar-container thead th {
+            color: #d3af37;
+            font-size: clamp(1rem, 3vw, 1.2em); /* Fluid font size */
+        }
+        .calendar-container tbody td {
+            color: #fefefe;
+        }
+        .highlighted-day {
+            border: 5px solid #d3af37;
+            border-radius: 50%;
+            color: #d3af37;
+            font-weight: bold;
+        }
+
+        /* Address Info Styles */
+        .address-info {
+            padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em); /* Fluid padding */
+            background-color: #1a2023;
+        }
+        .address-title {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+        .address-subtitle {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+        .address-restaurant {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+            color: #d3af37;
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+
+        /* Map Section Styles */
+        .map-section {
+            padding: clamp(1rem, 4vw, 2em) clamp(0.5rem, 2vw, 1em); /* Fluid padding */
+            background-color: #1a2023;
+        }
+        .map-title {
+            font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
+            color: #d3af37;
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+        .map-subtitle {
+            font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
+            margin: clamp(0.5rem, 2vw, 1em) 0; /* Fluid margin */
+        }
+        .yandex-map-iframe {
+            margin: clamp(1rem, 4vw, 2em) auto; /* Fluid margin */
+            border-radius: 50px; /* Match other rounded elements */
+            overflow: hidden; /* Ensure border-radius is applied */
+            max-width: 90%; /* Constrain width */
+            display: block; /* To apply margin: auto */
+            height: clamp(200px, 50vh, 450px); /* Fluid height */
+            border: 2px solid #434634; /* Add border */
+        }
+
+        /* Countdown Section Styles */
+        .countdown-section {
+            padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em);
+            background-color: #1a2023;
+        }
+        .countdown-owners-title {
+            font-size: clamp(3rem, 7vw, 6.25rem);
+            color: #d3af37;
+            margin: 1em 0;
+        }
+        .countdown-owners-names {
+            font-size: clamp(3rem, 7vw, 6.25rem);
+            font-weight: bold;
+            margin: 0.5em 0;
+        }
+        .countdown-pre-text {
+            font-size: clamp(2rem, 4vw, 5rem);
+            margin: 2em 0 1em 0;
+        }
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: clamp(0.5rem, 2vw, 1.5rem);
+            font-size: clamp(2rem, 6vw, 8rem); /* Large numbers */
+            font-weight: bold;
+            color: #fefefe;
+        }
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .countdown-item span:first-child {
+            line-height: 1;
+        }
+        .countdown-label {
+            font-size: clamp(0.8rem, 2vw, 1.5rem); /* Smaller labels */
+            font-weight: normal;
+            color: #d3af37;
+            margin-top: 0.5em;
+        }
+        .countdown-separator {
+            font-size: clamp(2rem, 6vw, 8rem);
+            line-height: 1;
+            color: #d3af37;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cover Start -->
+    <div class="background-container">
+        <div class="content">
+            <br><br><br><br><br><br><br>
+            <h1 class="animate-on-scroll">Ерлан</h1>
+            <h1 class="animate-on-scroll">&</h1>
+            <h1 class="animate-on-scroll">Қарлығаш</h1>
+            <br><br><br><br><br><br>
+            <p class="animate-on-scroll">28.03.2026</p>
+            <br><br><br><br><br><br><br><br>
+            <!-- <div class="date-row animate-on-scroll">
+                <span>дүйсенбі</span>
+                <span class="date-number">23</span>
+                <span>18:00</span>
+            </div> -->
+            <!-- <p class="animate-on-scroll">2026</p> -->
+        </div>
+    </div>
+    <!-- Cover End -->
+
+    <!-- Invitation Texts Start -->
+    <div class="invitation-container">
+        <p class="invitation-subtitle animate-on-scroll">Құрметті ағайын-туыс, бауырлар, құда-жекжат, дос-жарандар, әріптестер!</p>
+        <br><br><br>
+        <p class="invitation-body animate-on-scroll">Сіздерді</p>
+        <br>
+        <p class="invitation-name animate-on-scroll">Ерлан & Қарлығаштың</p>
+        <br>
+        <p class="invitation-body animate-on-scroll">шаңырақ көтеру тойына арналып жайылған ақ дастарханымыздың қадірлі қонағымыз болуға шақырамыз!</p>
+    </div>
+    <!-- Invitation Texts End -->
+
+    <br><br><br><br><br><br><br><br>
+
+    <!-- Calendar Section Start -->
+    <div class="calendar-section">
+        <p class="calendar-title animate-on-scroll">Той салтанаты</p>
+        <p class="calendar-date animate-on-scroll">28 наурыз 2026 жыл<br>сағат 18:00 де</p>
+        <div class="calendar-container animate-on-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дс</th><th>Сс</th><th>Ср</th><th>Бс</th><th>Жм</th><th>Сб</th><th>Жк</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+                    <tr><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+                    <tr><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+                    <tr><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td></tr>
+                    <tr><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td class="highlighted-day">28</td><td>29</td></tr>
+                    <tr><td>30</td><td>31</td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Calendar Section End -->
+
+    <!-- Address Info Start -->
+    <div class="address-info">
+        <p class="address-title animate-on-scroll">Мекен жайымыз:</p>
+        <p class="address-subtitle animate-on-scroll">Ақтөбе қаласы<br>Кенес Нокин к. 44</p>
+        <p class="address-restaurant animate-on-scroll">"White Hill" мейрамханасы</p>
+    </div>
+    <!-- Address Info End -->
+
+    <center>
+        <div>
+        <a href="https://2gis.kz/aktobe/firm/70000001059720090"><img src="2gis-icon.png" style="width: 42px; height: 42px; border-radius: 20%;"></a>
+        </div>
+    </center>
+
+    <!-- Address on Map Start -->
+    <div class="map-section">
+        <iframe
+            src="https://yandex.ru/map-widget/v1/?um=constructor%3A59898adc9997bbbc918bb2755ce9cac615242d94d30b818059ef82e28b685ddc&source=constructorLink"
+            width="100%" height="450" frameborder="0" class="yandex-map-iframe animate-on-scroll">
+        </iframe>
+    </div>
+    <!-- Address on Map End -->
+
+    <!-- Countdown Section Start -->
+    <div class="countdown-section">
+        <p class="countdown-owners-title animate-on-scroll">Той иелері:</p>
+        <p class="countdown-owners-names animate-on-scroll">Нұрлан-Гүлжазира</p>
+        <p class="countdown-pre-text animate-on-scroll">той салтанатына дейін:</p>
+        <div class="countdown-timer animate-on-scroll">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                <span class="countdown-label">күн</span>
+            </div>
+            <div class="countdown-separator">:</div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                <span class="countdown-label">сағат</span>
+            </div>
+            <div class="countdown-separator">:</div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                <span class="countdown-label">минут</span>
+            </div>
+            <div class="countdown-separator">:</div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                <span class="countdown-label">секунд</span>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br><br><br><br><br><br>
+    <!-- Countdown Section End -->
+
+    <script>
+        const targetDate = new Date('2026-03-28T18:00:00+05:00').getTime();
+
+        const daysSpan = document.getElementById('days');
+        const hoursSpan = document.getElementById('hours');
+        const minutesSpan = document.getElementById('minutes');
+        const secondsSpan = document.getElementById('seconds');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                if (daysSpan) daysSpan.textContent = '00';
+                if (hoursSpan) hoursSpan.textContent = '00';
+                if (minutesSpan) minutesSpan.textContent = '00';
+                if (secondsSpan) secondsSpan.textContent = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (daysSpan) daysSpan.textContent = String(days).padStart(2, '0');
+            if (hoursSpan) hoursSpan.textContent = String(hours).padStart(2, '0');
+            if (minutesSpan) minutesSpan.textContent = String(minutes).padStart(2, '0');
+            if (secondsSpan) secondsSpan.textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown(); // Initial call
+        const countdownInterval = setInterval(updateCountdown, 1000);
+
+        // Scroll animation script
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1 // Trigger when 10% of the item is visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
