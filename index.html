@@ -16,9 +16,9 @@
             margin: 0;
             padding: 0;
             font-family: 'Cassandra', sans-serif;
-            color: #fefefe;
+            color: #102934;
             text-align: center;
-            background-color: #1a2023;/*#faf8f5;*/
+            background-color: #fffeea;/*#faf8f5;*/
         }
         /* Base animation styles */
         .animate-on-scroll {
@@ -46,7 +46,7 @@
             align-items: center;
             padding: clamp(1rem, 5vw, 20px); /* Responsive padding */
             box-sizing: border-box;
-            background-color: #1a2023;
+            background-color: #fffeea;
         }
         .content {
             /* This div is here if we need to add a background overlay later */
@@ -103,7 +103,7 @@
         /* Calendar Section Styles */
         .calendar-section {
             padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em); /* Fluid padding */
-            background-color: #1a2023;
+            background-color: #fffeea;
         }
         .calendar-title {
             font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
@@ -137,7 +137,7 @@
             font-size: clamp(1rem, 3vw, 1.2em); /* Fluid font size */
         }
         .calendar-container tbody td {
-            color: #fefefe;
+            color: #102934;
         }
         .highlighted-day {
             border: 5px solid #d3af37;
@@ -149,7 +149,7 @@
         /* Address Info Styles */
         .address-info {
             padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em); /* Fluid padding */
-            background-color: #1a2023;
+            background-color: #fffeea;
         }
         .address-title {
             font-size: clamp(2rem, 4vw, 5rem); /* Fluid font size */
@@ -168,7 +168,7 @@
         /* Map Section Styles */
         .map-section {
             padding: clamp(1rem, 4vw, 2em) clamp(0.5rem, 2vw, 1em); /* Fluid padding */
-            background-color: #1a2023;
+            background-color: #fffeea;
         }
         .map-title {
             font-size: clamp(3rem, 7vw, 6.25rem); /* Fluid font size */
@@ -192,7 +192,7 @@
         /* Countdown Section Styles */
         .countdown-section {
             padding: clamp(2rem, 8vw, 4em) clamp(1rem, 4vw, 2em);
-            background-color: #1a2023;
+            background-color: #fffeea;
         }
         .countdown-owners-title {
             font-size: clamp(3rem, 7vw, 6.25rem);
@@ -215,7 +215,7 @@
             gap: clamp(0.5rem, 2vw, 1.5rem);
             font-size: clamp(2rem, 6vw, 8rem); /* Large numbers */
             font-weight: bold;
-            color: #fefefe;
+            color: #102934;
         }
         .countdown-item {
             display: flex;
@@ -235,6 +235,31 @@
             font-size: clamp(2rem, 6vw, 8rem);
             line-height: 1;
             color: #d3af37;
+        }
+
+        .planePath {
+        stroke: #d3af37;
+        stroke-width: .2%;
+        stroke-width: .6%;
+        stroke-dasharray: 2% 4%;
+        stroke-linecap: round;
+        fill: none;
+        }
+
+        .fil1 {
+        fill: #D9DADA;
+        }
+
+        .fil2 {
+        fill: #C5C6C6;
+        }
+
+        .fil4 {
+        fill: #9D9E9E;
+        }
+
+        .fil3 {
+        fill: #AEAFB0;
         }
     </style>
 </head>
@@ -271,7 +296,22 @@
     </div>
     <!-- Invitation Texts End -->
 
-    <br><br><br><br><br><br><br><br>
+    <!-- <br><br><br><br><br><br><br><br> -->
+
+    <svg viewBox="0 0 3387 1270" style="margin-top: 20px;">
+        <path id="planePath" class="planePath" d="M-226 626c439,4 636,-213 934,-225 755,-31 602,769 1334,658 562,-86 668,-698 266,-908 -401,-210 -893,189 -632,630 260,441 747,121 1051,91 360,-36 889,179 889,179" />
+        <g id="plane">
+          <polygon class="fil1" points="-141,-10 199,0 -198,-72 -188,-61 -171,-57 -184,-57 " />
+          <polygon class="fil2" points="199,0 -141,-10 -163,63 -123,9 " />
+          <polygon class="fil3" points="-95,39 -113,32 -123,9 -163,63 -105,53 -108,45 -87,48 -90,45 -103,41 -94,41 " />
+          <path class="fil4" d="M-87 48l-21 -3 3 8 19 -4 -1 -1zm-26 -16l18 7 -2 -1 32 -7 -29 1 11 -4 -24 -1 -16 -18 10 23zm10 9l13 4 -4 -4 -9 0z" />
+          <polygon class="fil1" points="-83,28 -94,32 -65,31 -97,38 -86,49 -67,70 199,0 -123,9 -107,27 " />
+        </g>
+        <!-- Define the motion path animation -->
+        <animateMotion xlink:href="#plane" dur="5s" repeatCount="indefinite" rotate="auto">
+          <mpath xlink:href="#planePath" />
+        </animateMotion> 
+      </svg>
 
     <!-- Calendar Section Start -->
     <div class="calendar-section">
@@ -323,6 +363,7 @@
     <!-- Countdown Section Start -->
     <div class="countdown-section">
         <p class="countdown-owners-title animate-on-scroll">Той иелері:</p>
+        <p class="countdown-owners-names animate-on-scroll">Мәриям (Сәрсен)</p>
         <p class="countdown-owners-names animate-on-scroll">Нұрлан-Гүлжазира</p>
         <p class="countdown-pre-text animate-on-scroll">той салтанатына дейін:</p>
         <div class="countdown-timer animate-on-scroll">
