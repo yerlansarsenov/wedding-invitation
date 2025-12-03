@@ -261,15 +261,63 @@
         .fil3 {
         fill: #AEAFB0;
         }
+
+        .floating-button {
+            position: fixed;
+            left: 20px;
+            top: 70vh; /* 0.7f of the viewport height */
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background-color: #d3af37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .floating-button svg {
+            width: 36px;
+            height: 36px;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.1);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+        }
     </style>
 </head>
 <body>
+    <audio id="background-music" src="mus.mp3" loop></audio>
+    <div id="play-pause-button" class="floating-button">
+        <svg id="play-icon" viewBox="0 0 24 24" style="display: block;">
+            <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+        </svg>
+        <svg id="pause-icon" viewBox="0 0 24 24" style="display: none;">
+            <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+        </svg>
+    </div>
     <!-- Cover Start -->
     <div class="background-container">
         <div class="content">
             <br><br><br><br><br><br><br>
             <h1 class="animate-on-scroll">Ерлан</h1>
-            <h1 class="animate-on-scroll">&</h1>
+            <h1 class="animate-on-scroll">мен</h1>
             <h1 class="animate-on-scroll">Қарлығаш</h1>
             <br><br><br><br><br><br>
             <p class="animate-on-scroll">28.03.2026</p>
@@ -290,7 +338,7 @@
         <br><br><br>
         <p class="invitation-body animate-on-scroll">Сіздерді</p>
         <br>
-        <p class="invitation-name animate-on-scroll">Ерлан & Қарлығаштың</p>
+        <p class="invitation-name animate-on-scroll">Ерлан - Қарлығаштың</p>
         <br>
         <p class="invitation-body animate-on-scroll">шаңырақ көтеру тойына арналып жайылған ақ дастарханымыздың қадірлі қонағымыз болуға шақырамыз!</p>
     </div>
@@ -447,6 +495,25 @@
             document.querySelectorAll('.animate-on-scroll').forEach(element => {
                 observer.observe(element);
             });
+        });
+
+        const playPauseButton = document.getElementById('play-pause-button');
+        const audio = document.getElementById('background-music');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+
+        // Modern browsers require a user interaction to play audio.
+        // The first click on this button will count as that interaction.
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            } else {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            }
         });
     </script>
 </body>
